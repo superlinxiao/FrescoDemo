@@ -3,6 +3,7 @@ package com.example.administrator.frescodemo.imageloader;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -15,6 +16,7 @@ import com.facebook.datasource.BaseDataSubscriber;
 import com.facebook.datasource.DataSource;
 import com.facebook.datasource.DataSubscriber;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.common.ImageDecodeOptions;
 import com.facebook.imagepipeline.core.ExecutorSupplier;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.decoder.ProgressiveJpegConfig;
@@ -102,8 +104,11 @@ public class ImageLoaderConfig {
           Fresco.getImagePipeline().clearMemoryCaches();
         }
       });
+      ImageDecodeOptions build = ImageDecodeOptions.newBuilder().setBitmapConfig(Config.ARGB_8888)
+          .build();
       sImagePipelineConfig = ImagePipelineConfig.newBuilder(context)
           .setBitmapsConfig(Bitmap.Config.RGB_565) // 若不是要求忒高清显示应用，就用使用RGB_565吧（默认是ARGB_8888)
+//          .setImageDecoder(build)
           .setDownsampleEnabled(true) // 在解码时改变图片的大小，支持PNG、JPG以及WEBP格式的图片，与ResizeOptions配合使
           // 设置Jpeg格式的图片支持渐进式显示
           .setProgressiveJpegConfig(new ProgressiveJpegConfig() {
